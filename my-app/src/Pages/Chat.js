@@ -23,7 +23,8 @@ import Modal from '../Components/Modal';
 import FileUpload from '../Components/FileUpload';
 import Dialog from '../Components/Dialog';
 import DropdownWrapper from '../Components/DropdownWrapper';
-
+import DropdownWrapper2 from '../Components/DropdownWrapper';
+import DropdownWrapper3 from '../Components/DropdownWrapper';
 ///////////////////////////
 const ChatContainer = styled.main`
   display: flex;
@@ -157,6 +158,10 @@ const Chat = ({ params }) => {
   const [mediaRecording, setMediaRecording] = useState(false);
   const [currentFileId, setCurrentFileId] = useState(1);
   const [currentDialog, setCurrentDialog] = useState('開始新對話');
+
+  const [curClsId, setCurClsId] = useState(1);
+  const [curSesId, setCurSesId] = useState(1);
+
   const [dropdownRole, setDropdownRole] = useState(['學生', '老師']);
   const [selectRole, setSelectRole] = useState('老師');
   // 使用 DropdownWrapper Component
@@ -310,12 +315,12 @@ const Chat = ({ params }) => {
     try {
       console.log(currentFileId);
       const response = await axios.post(
-        `http://se.bitx.tw:5000/chat/${uuid}`,
+        `http://se.bitx.tw:5000/student_chat/${curClsId}/${curSesId}`,
         {
           file_id: currentFileId,
           user_input: userInput,
-          course_id: 1,
-          course_section_id: 1,
+          course_id: curClsId,
+          course_section_id: curSesId,
         },
         {
           headers: {
@@ -360,7 +365,7 @@ const Chat = ({ params }) => {
           <ButtonIcon>
             <ChevronRight />
           </ButtonIcon>
-          {/* 選擇角色 */}
+          {/* 選擇周次 */}
           {/* <ButtonIcon>
          <DropdownWrapper
           options={roles}

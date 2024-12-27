@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { useState, useEffect, useRef } from 'react';
+import axios from 'axios';
 // Dropdown items fetched from backend
 const dropdownWeeks = [
   '113-1學期 第三週',
@@ -9,258 +10,162 @@ const dropdownWeeks = [
 
 const feedbackdata = [
   {
-    name: '王小明',
+    name: '林詩涵',
     feedback:
-      '春風和煦，陽光灑滿大地，綠葉搖曳生姿，鳥兒在樹間歌唱，河水靜靜流淌，彷彿訴說著大自然的秘密。一切都如此生機盎然，讓人心生愉悅，沉浸在這片祥和之中，感受生命的美好與無限可能。',
+      '老師的課程講解非常清晰，特別是在講解數據結構時用的實例很貼近生活。不過希望能多一些實作練習的機會，這樣可以加深對概念的理解。',
     feedback2:
-      '春風和煦，陽光灑滿大地，綠葉搖曳生姿，鳥兒在樹間歌唱，河水靜靜流淌，彷彿訴說著大自然的秘密。一切都如此生機盎然，讓人心生愉悅，沉浸在這片祥和之中，感受生命的美好與無限可能。',
+      '這學期的小組專案讓我學會了如何與團隊協作。雖然過程中遇到不少挑戰，但通過討論和互相支援，最終完成了一個令人滿意的作品。',
   },
   {
-    name: '張嘉欣',
+    name: '吳承翰',
     feedback:
-      '春風和煦，陽光灑滿大地，綠葉搖曳生姿，鳥兒在樹間歌唱，河水靜靜流淌，彷彿訴說著大自然的秘密。一切都如此生機盎然，讓人心生愉悅，沉浸在這片祥和之中，感受生命的美好與無限可能。',
+      '課程內容充實，但進度稍快，建議可以在每個主題結束後多留一些時間讓我們消化和提問。實驗課的設計很有趣，讓我更容易理解理論知識。',
     feedback2:
-      '春風和煦，陽光灑滿大地，綠葉搖曳生姿，鳥兒在樹間歌唱，河水靜靜流淌，彷彿訴說著大自然的秘密。一切都如此生機盎然，讓人心生愉悅，沉浸在這片祥和之中，感受生命的美好與無限可能。',
+      '期末專題的自由發揮空間很大，這讓我能夠結合自己的興趣來實踐所學。希望以後能有更多類似的創意任務。',
   },
   {
-    name: '王子豪',
+    name: '黃雅芝',
     feedback:
-      '春風和煦，陽光灑滿大地，綠葉搖曳生姿，鳥兒在樹間歌唱，河水靜靜流淌，彷彿訴說著大自然的秘密。一切都如此生機盎然，讓人心生愉悅，沉浸在這片祥和之中，感受生命的美好與無限可能。',
+      '感謝老師在課後都願意留下來解答我們的問題。程式設計的部分講解得很仔細，對新手來說很友善。希望教材可以提前發放，方便預習。',
     feedback2:
-      '春風和煦，陽光灑滿大地，綠葉搖曳生姿，鳥兒在樹間歌唱，河水靜靜流淌，彷彿訴說著大自然的秘密。一切都如此生機盎然，讓人心生愉悅，沉浸在這片祥和之中，感受生命的美好與無限可能。',
+      '分組討論的環節很有幫助，聽到其他同學的想法讓我學到很多。但小組報告的時間可以再延長一些。',
   },
   {
-    name: '陳志明',
+    name: '無待錚',
     feedback:
-      '春風和煦，陽光灑滿大地，綠葉搖曳生姿，鳥兒在樹間歌唱，河水靜靜流淌，彷彿訴說著大自然的秘密。一切都如此生機盎然，讓人心生愉悅，沉浸在這片祥和之中，感受生命的美好與無限可能。',
+      '專題製作的指導很詳細，讓我學會了專案規劃和時間管理。不過作業量較大，建議可以適當調整，讓我們有更多時間深入研究感興趣的主題。',
     feedback2:
-      '春風和煦，陽光灑滿大地，綠葉搖曳生姿，鳥兒在樹間歌唱，河水靜靜流淌，彷彿訴說著大自然的秘密。一切都如此生機盎然，讓人心生愉悅，沉浸在這片祥和之中，感受生命的美好與無限可能。',
+      '課堂上的即時互動很有趣，但希望能增加一些實際應用案例的分析，幫助我們理解知識在職場上的運用。',
   },
   {
-    name: '王明',
+    name: '陳思穎',
     feedback:
-      '春風和煦，陽光灑滿大地，綠葉搖曳生姿，鳥兒在樹間歌唱，河水靜靜流淌，彷彿訴說著大自然的秘密。一切都如此生機盎然，讓人心生愉悅，沉浸在這片祥和之中，感受生命的美好與無限可能。',
+      '老師上課時會分享業界經驗，讓課程內容更貼近實際應用。希望可以安排一些業界專家來分享，增加我們對行業的了解。',
     feedback2:
-      '春風和煦，陽光灑滿大地，綠葉搖曳生姿，鳥兒在樹間歌唱，河水靜靜流淌，彷彿訴說著大自然的秘密。一切都如此生機盎然，讓人心生愉悅，沉浸在這片祥和之中，感受生命的美好與無限可能。',
+      '線上學習平台的功能很完善，但有時會遇到技術問題。建議可以提供更詳細的平台使用教學。',
   },
   {
-    name: '張欣',
+    name: '曾柏魚',
     feedback:
-      '春風和煦，陽光灑滿大地，綠葉搖曳生姿，鳥兒在樹間歌唱，河水靜靜流淌，彷彿訴說著大自然的秘密。一切都如此生機盎然，讓人心生愉悅，沉浸在這片祥和之中，感受生命的美好與無限可能。',
+      '理論課程安排得很有條理，循序漸進。但有時作業的難度會突然提高，希望能有更多的範例說明和指導。',
     feedback2:
-      '春風和煦，陽光灑滿大地，綠葉搖曳生姿，鳥兒在樹間歌唱，河水靜靜流淌，彷彿訴說著大自然的秘密。一切都如此生機盎然，讓人心生愉悅，沉浸在這片祥和之中，感受生命的美好與無限可能。',
+      '很喜歡課堂上的案例分析環節，但希望能有更多機會讓同學上台分享自己的想法和經驗。',
   },
   {
-    name: '王豪',
+    name: '張芸瑄',
     feedback:
-      '春風和煦，陽光灑滿大地，綠葉搖曳生姿，鳥兒在樹間歌唱，河水靜靜流淌，彷彿訴說著大自然的秘密。一切都如此生機盎然，讓人心生愉悅，沉浸在這片祥和之中，感受生命的美好與無限可能。',
+      '課程的實用性很高，特別是在教授新技術時會結合當前產業趨勢。建議可以提供更多額外的學習資源和延伸閱讀材料。',
     feedback2:
-      '春風和煦，陽光灑滿大地，綠葉搖曳生姿，鳥兒在樹間歌唱，河水靜靜流淌，彷彿訴說著大自然的秘密。一切都如此生機盎然，讓人心生愉悅，沉浸在這片祥和之中，感受生命的美好與無限可能。',
+      '小組討論的時間安排得很好，但場地有時會太吵，影響討論品質。希望能有更適合的討論空間。',
   },
   {
-    name: '志明',
+    name: '章節',
     feedback:
-      '春風和煦，陽光灑滿大地，綠葉搖曳生姿，鳥兒在樹間歌唱，河水靜靜流淌，彷彿訴說著大自然的秘密。一切都如此生機盎然，讓人心生愉悅，沉浸在這片祥和之中，感受生命的美好與無限可能。',
+      '老師的教學方式很活潑，善於用生活化的例子來解釋複雜的概念。不過課程簡報內容可以再豐富一些。',
     feedback2:
-      '春風和煦，陽光灑滿大地，綠葉搖曳生姿，鳥兒在樹間歌唱，河水靜靜流淌，彷彿訴說著大自然的秘密。一切都如此生機盎然，讓人心生愉悅，沉浸在這片祥和之中，感受生命的美好與無限可能。',
+      '期中考試的難度適中，但考試範圍可以說明得更清楚一些。整體來說，考試能有效檢驗學習成果。',
   },
   {
-    name: '小明',
+    name: '蔡佩珊',
     feedback:
-      '春風和煦，陽光灑滿大地，綠葉搖曳生姿，鳥兒在樹間歌唱，河水靜靜流淌，彷彿訴說著大自然的秘密。一切都如此生機盎然，讓人心生愉悅，沉浸在這片祥和之中，感受生命的美好與無限可能。',
+      '課程內容與實際應用結合得很好，但有時上課節奏太快，建議可以在重要概念上多花一些時間講解。',
     feedback2:
-      '春風和煦，陽光灑滿大地，綠葉搖曳生姿，鳥兒在樹間歌唱，河水靜靜流淌，彷彿訴說著大自然的秘密。一切都如此生機盎然，讓人心生愉悅，沉浸在這片祥和之中，感受生命的美好與無限可能。',
+      '很感謝老師提供的課後輔導機會，這對學習困難的同學很有幫助。希望這類輔導時間能更有彈性。',
   },
   {
-    name: '嘉欣',
+    name: '彭尙折',
     feedback:
-      '春風和煦，陽光灑滿大地，綠葉搖曳生姿，鳥兒在樹間歌唱，河水靜靜流淌，彷彿訴說著大自然的秘密。一切都如此生機盎然，讓人心生愉悅，沉浸在這片祥和之中，感受生命的美好與無限可能。',
+      '作業設計很有創意，能激發思考。但繳交期限有時太緊湊，希望能提前公布作業內容，方便我們規劃時間。',
     feedback2:
-      '春風和煦，陽光灑滿大地，綠葉搖曳生姿，鳥兒在樹間歌唱，河水靜靜流淌，彷彿訴說著大自然的秘密。一切都如此生機盎然，讓人心生愉悅，沉浸在這片祥和之中，感受生命的美好與無限可能。',
+      '課程的評分標準很清楚，但建議期末作業的比重可以再高一些，因為投入了很多心力。',
   },
   {
-    name: '子豪',
+    name: '王采薇',
     feedback:
-      '春風和煦，陽光灑滿大地，綠葉搖曳生姿，鳥兒在樹間歌唱，河水靜靜流淌，彷彿訴說著大自然的秘密。一切都如此生機盎然，讓人心生愉悅，沉浸在這片祥和之中，感受生命的美好與無限可能。',
+      '老師對待學生很有耐心，課堂氣氛輕鬆愉快。希望能增加一些戶外教學或參訪活動，增添學習樂趣。',
     feedback2:
-      '春風和煦，陽光灑滿大地，綠葉搖曳生姿，鳥兒在樹間歌唱，河水靜靜流淌，彷彿訴說著大自然的秘密。一切都如此生機盎然，讓人心生愉悅，沉浸在這片祥和之中，感受生命的美好與無限可能。',
+      '小組作業的分組方式很公平，但建議可以讓同學有更多機會與不同的同學合作，增進交流。',
   },
   {
-    name: '陳明',
+    name: '郭建志',
     feedback:
-      '春風和煦，陽光灑滿大地，綠葉搖曳生姿，鳥兒在樹間歌唱，河水靜靜流淌，彷彿訴說著大自然的秘密。一切都如此生機盎然，讓人心生愉悅，沉浸在這片祥和之中，感受生命的美好與無限可能。',
+      '實驗課的器材很完善，助教的指導也很細心。但實驗前的說明可以再詳細一些，幫助我們更好地準備。',
     feedback2:
-      '春風和煦，陽光灑滿大地，綠葉搖曳生姿，鳥兒在樹間歌唱，河水靜靜流淌，彷彿訴說著大自然的秘密。一切都如此生機盎然，讓人心生愉悅，沉浸在這片祥和之中，感受生命的美好與無限可能。',
+      '對課程安排的建議是可以增加一些業界專題研究的機會，讓我們更了解實際工作環境。',
   },
 ];
 const groupfeedbackdata = [
   {
     group: 1,
     namelist: ['王小明', '張嘉欣', '王子豪', '陳志明'],
-    feedbacklist: [
-      { section: '認識需求理論', feedback: '你們對需求理論有不錯的理解背景' },
-      {
-        section: '生存需求',
-        feedback: '某些人的生存需求可能不是基本需求，而是其他需求',
-      },
-      { section: '成長需求', feedback: '成長需求是人類的共同需求' },
-      { section: '認識需求理論', feedback: '你們對需求理論有不錯的理解背景' },
-      {
-        section: '生存需求',
-        feedback: '某些人的生存需求可能不是基本需求，而是其他需求',
-      },
-      { section: '成長需求', feedback: '成長需求是人類的共同需求' },
-    ],
+    feedback:
+      '實驗課的器材很完善，助教的指導也很細心。但實驗前的說明可以再詳細一些，幫助我們更好地準備。',
+    feedback2:
+      '對課程安排的建議是可以增加一些業界專題研究的機會，讓我們更了解實際工作環境。',
   },
   {
     group: 2,
-    namelist: ['李小華', '周文強', '林美芳', '陳浩天'],
-    feedbacklist: [
-      { section: '認識需求理論', feedback: '對需求理論的概念分析很有深度' },
-      {
-        section: '生存需求',
-        feedback: '生存需求的表現形式可能依文化差異有所不同',
-      },
-      { section: '成長需求', feedback: '成長需求驅動了許多創造性的行為' },
-      { section: '認識需求理論', feedback: '你們對需求理論有不錯的理解背景' },
-      {
-        section: '生存需求',
-        feedback: '某些人的生存需求可能不是基本需求，而是其他需求',
-      },
-      { section: '成長需求', feedback: '成長需求是人類的共同需求' },
-    ],
+    namelist: ['林雅婷', '陳俊宏', '曾柏魚', '許瑋倫'],
+    feedback:
+      '小組討論時間的安排很合理，但希望能有更多跨組交流的機會。組內合作氣氛良好，每個人都積極參與。',
+    feedback2:
+      '專題研究的主題選擇很有挑戰性，讓我們學到了很多。建議可以提供更多研究方法的指導。',
   },
   {
     group: 3,
-    namelist: ['趙偉強', '林若蘭', '楊子琪', '方志豪'],
-    feedbacklist: [
-      { section: '認識需求理論', feedback: '你們展現了對需求理論的深刻洞察力' },
-      { section: '生存需求', feedback: '對生存需求的解釋切合實際' },
-      { section: '成長需求', feedback: '成長需求與個人價值密切相關' },
-      { section: '認識需求理論', feedback: '你們對需求理論有不錯的理解背景' },
-      {
-        section: '生存需求',
-        feedback: '某些人的生存需求可能不是基本需求，而是其他需求',
-      },
-      { section: '成長需求', feedback: '成長需求是人類的共同需求' },
-    ],
+    namelist: ['黃思穎', '彭尙折', '吳雨珊', '蔡明宏'],
+    feedback:
+      '課程內容結構清晰，理論與實務結合得當。組員們都認為實作環節特別有幫助，加深了對概念的理解。',
+    feedback2:
+      '希望能增加更多即時互動的環節，例如案例分析或情境模擬。這樣可以提高學習興趣和參與度。',
   },
   {
     group: 4,
-    namelist: ['陳建國', '胡詠琪', '劉子瑋', '黃俊傑'],
-    feedbacklist: [
-      {
-        section: '認識需求理論',
-        feedback: '對需求理論的描述展現了良好的邏輯性',
-      },
-      { section: '生存需求', feedback: '生存需求可能與當前的社會情況有關' },
-      { section: '成長需求', feedback: '成長需求能夠激發個人的潛能' },
-      { section: '認識需求理論', feedback: '你們對需求理論有不錯的理解背景' },
-      {
-        section: '生存需求',
-        feedback: '某些人的生存需求可能不是基本需求，而是其他需求',
-      },
-      { section: '成長需求', feedback: '成長需求是人類的共同需求' },
-    ],
+    namelist: ['謝佳芳', '楊志偉', '李美玲', '周子軒'],
+    feedback:
+      '團隊合作過程中，我們學會了如何有效溝通和分工。每個人都發揮所長，共同完成專案。',
+    feedback2:
+      '建議可以提供更多業界實例分析，讓我們更了解理論知識在實際工作中的應用。',
   },
   {
-    group: 3,
-    namelist: ['趙偉強', '林若蘭', '楊子琪', '方志豪'],
-    feedbacklist: [
-      { section: '認識需求理論', feedback: '你們展現了對需求理論的深刻洞察力' },
-      { section: '生存需求', feedback: '對生存需求的解釋切合實際' },
-      { section: '成長需求', feedback: '成長需求與個人價值密切相關' },
-      { section: '認識需求理論', feedback: '你們對需求理論有不錯的理解背景' },
-      {
-        section: '生存需求',
-        feedback: '某些人的生存需求可能不是基本需求，而是其他需求',
-      },
-      { section: '成長需求', feedback: '成長需求是人類的共同需求' },
-    ],
+    group: 5,
+    namelist: ['朱家瑋', '郭雅芬', '賴建志', '葉思伶'],
+    feedback:
+      '老師的教學方式很活潑，善於引導我們思考。小組討論時大家都能積極發言，互相學習。',
+    feedback2: '期望能有更多機會練習簡報技巧，這對未來職涯發展很有幫助。',
   },
   {
-    group: 4,
-    namelist: ['陳建國', '胡詠琪', '劉子瑋', '黃俊傑'],
-    feedbacklist: [
-      {
-        section: '認識需求理論',
-        feedback: '對需求理論的描述展現了良好的邏輯性',
-      },
-      { section: '生存需求', feedback: '生存需求可能與當前的社會情況有關' },
-      { section: '成長需求', feedback: '成長需求能夠激發個人的潛能' },
-      { section: '認識需求理論', feedback: '你們對需求理論有不錯的理解背景' },
-      {
-        section: '生存需求',
-        feedback: '某些人的生存需求可能不是基本需求，而是其他需求',
-      },
-      { section: '成長需求', feedback: '成長需求是人類的共同需求' },
-    ],
+    group: 6,
+    namelist: ['莊雅婷', '洪志明', '徐佩珊', '江承翰'],
+    feedback:
+      '實作課程的設計很用心，讓我們能夠實際應用所學。組員間的配合度很高，互相支援。',
+    feedback2: '建議可以安排一些工作坊形式的課程，增加實務操作的機會。',
   },
   {
-    group: 3,
-    namelist: ['趙偉強', '林若蘭', '楊子琪', '方志豪'],
-    feedbacklist: [
-      { section: '認識需求理論', feedback: '你們展現了對需求理論的深刻洞察力' },
-      { section: '生存需求', feedback: '對生存需求的解釋切合實際' },
-      { section: '成長需求', feedback: '成長需求與個人價值密切相關' },
-      { section: '認識需求理論', feedback: '你們對需求理論有不錯的理解背景' },
-      {
-        section: '生存需求',
-        feedback: '某些人的生存需求可能不是基本需求，而是其他需求',
-      },
-      { section: '成長需求', feedback: '成長需求是人類的共同需求' },
-    ],
+    group: 7,
+    namelist: ['鄭博文', '廖雅琪', '羅建業', '沈佳玲'],
+    feedback:
+      '小組報告的準備過程讓我們學到了很多，包括資料收集、分析和呈現的技巧。',
+    feedback2: '希望能有更多與其他組別交流的機會，分享不同的觀點和經驗。',
   },
   {
-    group: 4,
-    namelist: ['陳建國', '胡詠琪', '劉子瑋', '黃俊傑'],
-    feedbacklist: [
-      {
-        section: '認識需求理論',
-        feedback: '對需求理論的描述展現了良好的邏輯性',
-      },
-      { section: '生存需求', feedback: '生存需求可能與當前的社會情況有關' },
-      { section: '成長需求', feedback: '成長需求能夠激發個人的潛能' },
-      { section: '認識需求理論', feedback: '你們對需求理論有不錯的理解背景' },
-      {
-        section: '生存需求',
-        feedback: '某些人的生存需求可能不是基本需求，而是其他需求',
-      },
-      { section: '成長需求', feedback: '成長需求是人類的共同需求' },
-    ],
+    group: 8,
+    namelist: ['曾昱銘', '無待錚', '彭俊傑', '胡佳琪'],
+    feedback:
+      '課程的評量方式多元化，不只是考試，還包括專案實作和報告，很能檢驗學習成果。',
+    feedback2: '建議可以提供更多額外的學習資源，幫助我們深入研究感興趣的主題。',
   },
   {
-    group: 3,
-    namelist: ['趙偉強', '林若蘭', '楊子琪', '方志豪'],
-    feedbacklist: [
-      { section: '認識需求理論', feedback: '你們展現了對需求理論的深刻洞察力' },
-      { section: '生存需求', feedback: '對生存需求的解釋切合實際' },
-      { section: '成長需求', feedback: '成長需求與個人價值密切相關' },
-      { section: '認識需求理論', feedback: '你們對需求理論有不錯的理解背景' },
-      {
-        section: '生存需求',
-        feedback: '某些人的生存需求可能不是基本需求，而是其他需求',
-      },
-      { section: '成長需求', feedback: '成長需求是人類的共同需求' },
-    ],
+    group: 9,
+    namelist: ['馮志豪', '童雅文', '邱建德', '傅佳穎'],
+    feedback: '組內討論氣氛融洽，每個人都能提出自己的觀點，互相尊重和學習。',
+    feedback2: '希望能增加一些創新思考的培養，讓我們在專案中發揮更多創意。',
   },
   {
-    group: 4,
-    namelist: ['陳建國', '胡詠琪', '劉子瑋', '黃俊傑'],
-    feedbacklist: [
-      {
-        section: '認識需求理論',
-        feedback: '對需求理論的描述展現了良好的邏輯性',
-      },
-      { section: '生存需求', feedback: '生存需求可能與當前的社會情況有關' },
-      { section: '成長需求', feedback: '成長需求能夠激發個人的潛能' },
-      { section: '認識需求理論', feedback: '你們對需求理論有不錯的理解背景' },
-      {
-        section: '生存需求',
-        feedback: '某些人的生存需求可能不是基本需求，而是其他需求',
-      },
-      { section: '成長需求', feedback: '成長需求是人類的共同需求' },
-    ],
+    group: 10,
+    namelist: ['章節', '唐雅婷', '盧建宏', '趙佳琳'],
+    feedback: '專題製作過程中，我們學會了如何整合不同觀點，共同解決問題。',
+    feedback2: '建議可以安排一些企業參訪活動，增進對產業實務的了解。',
   },
 ];
 
@@ -277,7 +182,12 @@ const SearchField = styled.div`
   margin-top: 1.2rem;
   display: flex;
   justify-content: space-around;
-  background-color: rgba(0, 76, 76, 0.6);
+  background-color: ${(props) =>
+    props.userType === 'teacher'
+      ? 'rgba(0, 76, 76, 0.6)'
+      : props.userType === 'student'
+        ? '#ffc8dd'
+        : '#95a5a6'};
   padding: 0.8rem 1rem;
   margin-left: 5vw;
   width: 16rem;
@@ -294,7 +204,13 @@ const ButtonBox = styled.button`
   padding: 0.3rem 1rem;
   cursor: pointer;
   &:hover {
-    background-color: #53a7ba;
+    background-color: ${(props) =>
+      props.userType === 'teacher'
+        ? '#53a7ba'
+        : props.userType === 'student'
+          ? '#ff8fab'
+          : '#95a5a6'};
+
     color: #ffffff;
   }
 `;
@@ -372,14 +288,13 @@ const FeedBackBox = styled.div`
 `;
 const FeedBackDialog = styled.div`
   color: #000000;
-  background: linear-gradient(
-    180deg,
-    rgba(178, 216, 216, 0.7),
-    rgba(102, 178, 178, 0.6),
-    rgba(0, 128, 128, 0.5),
-    rgba(0, 102, 102, 0.7),
-    rgba(0, 76, 76, 0.7)
-  );
+  background: ${(props) =>
+    props.userType === 'teacher'
+      ? 'linear-gradient(180deg,rgba(178, 216, 216, 0.7),rgba(102, 178, 178, 0.6),rgba(0, 128, 128, 0.5),rgba(0, 102, 102, 0.7),rgba(0, 76, 76, 0.7))'
+      : props.userType === 'student'
+        ? 'linear-gradient(180deg,#ffe5ec,#ffc2d1,#ffb3c6,#ff8fab,#fb6f92)'
+        : '#95a5a6'};
+
   border-radius: 20px;
   padding: 1rem;
   font-size: 1.3rem;
@@ -507,11 +422,32 @@ const TableRow = styled.tr`
   }
 `;
 const Feedback = ({ params }) => {
+  const token = localStorage.getItem('token');
   const [person, setPerson] = useState('個人');
-  const [userType, setUserType] = useState('教師');
-  const [userName, setUserName] = useState('王小明');
+  const [userType, setUserType] = useState('');
+  const [userName, setUserName] = useState('');
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [selectedWeek, setSelectedWeek] = useState('113-1學期 第三週');
+
+  const getUserData = async () => {
+    try {
+      const response = await axios.get('http://se.bitx.tw:5000/user', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const { user } = response.data;
+      setUserName(user.name);
+      setUserType(user.user_type);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    getUserData();
+    // getCourseData();
+  }, []);
 
   const toggleDropdown = () => {
     setDropdownVisible(!dropdownVisible);
@@ -527,18 +463,19 @@ const Feedback = ({ params }) => {
   };
 
   const personRenderContent = () => {
-    console.log(
-      'Rendering person content, userType:',
-      userType,
-      'userName:',
-      userName
-    );
-    if (userType === '學生') {
+    // !Debugging
+    // console.log(
+    //   'Rendering person content, userType:',
+    //   userType,
+    //   'userName:',
+    //   userName
+    // );
+    if (userType === 'student') {
       for (let i = 0; i < feedbackdata.length; i++) {
         if (feedbackdata[i].name === userName) {
           return (
             <FeedBackBox isStudentView>
-              <FeedBackDialog isSingle>
+              <FeedBackDialog userType={userType} isSingle>
                 <h2>回饋</h2>
                 <div>{feedbackdata[i].feedback}</div>
                 <h2>重點延伸思考方式以及建議</h2>
@@ -548,11 +485,11 @@ const Feedback = ({ params }) => {
           );
         }
       }
-    } else {
+    } else if (userType === 'teacher') {
       return (
         <FeedBackBox isScrolling>
           {feedbackdata.map((feed, index) => (
-            <FeedBackDialog key={index}>
+            <FeedBackDialog userType={userType} key={index}>
               <h2>{feed.name}</h2>
               <div>{feed.feedback}</div>
             </FeedBackDialog>
@@ -562,13 +499,14 @@ const Feedback = ({ params }) => {
     }
   };
   const groupRenderContent = () => {
-    console.log(
-      'Rendering group content, userType:',
-      userType,
-      'userName:',
-      userName
-    );
-    if (userType === '學生') {
+    // !Debugging
+    // console.log(
+    //   'Rendering group content, userType:',
+    //   userType,
+    //   'userName:',
+    //   userName
+    // );
+    if (userType === 'student') {
       for (let i = 0; i < groupfeedbackdata.length; i++) {
         if (groupfeedbackdata[i].namelist.includes(userName)) {
           return (
@@ -581,17 +519,17 @@ const Feedback = ({ params }) => {
                   ))}
                 </NameList>
               </GroupTitle>
-              <FeedBackDialog isSingle>
+              <FeedBackDialog isSingle userType={userType}>
                 <h2>回饋</h2>
-                <div>{groupfeedbackdata[i].feedbacklist[0].feedback}</div>
+                <div>{groupfeedbackdata[i].feedback}</div>
                 <h2>重點延伸思考方式以及建議</h2>
-                <div>{groupfeedbackdata[i].feedbacklist[1].feedback}</div>
+                <div>{groupfeedbackdata[i].feedback2}</div>
               </FeedBackDialog>
             </FeedBackBox>
           );
         }
       }
-    } else {
+    } else if (userType === 'teacher') {
       return (
         <FeedBackBox isScrolling>
           {groupfeedbackdata.map((group, index) => (
@@ -604,11 +542,11 @@ const Feedback = ({ params }) => {
                   ))}
                 </NameList>
               </GroupTitle>
-              <FeedBackDialog>
+              <FeedBackDialog userType={userType}>
                 <h2>回饋</h2>
-                <div>{group.feedbacklist[0].feedback}</div>
+                <div>{group.feedback}</div>
                 <h2>重點延伸思考方式以及建議</h2>
-                <div>{group.feedbacklist[1].feedback}</div>
+                <div>{group.feedback2}</div>
               </FeedBackDialog>
             </GroupRow>
           ))}
@@ -647,13 +585,13 @@ const Feedback = ({ params }) => {
   };
   return (
     <Mainpage>
-      <SearchField>
+      <SearchField userType={userType}>
         {/* Dropdown Wrapper for Button and Menu */}
         <DropdownWrapper
           onMouseEnter={() => setDropdownVisible(true)}
           onMouseLeave={() => setDropdownVisible(false)}
         >
-          <ButtonBox>{selectedWeek}</ButtonBox>
+          <ButtonBox userType={userType}>{selectedWeek}</ButtonBox>
           <DropdownMenu visible={dropdownVisible}>
             {dropdownWeeks.map((week) => (
               <div key={week} onClick={() => selectWeek(week)}>
@@ -662,9 +600,12 @@ const Feedback = ({ params }) => {
             ))}
           </DropdownMenu>
         </DropdownWrapper>
-        <ButtonBox onClick={changeType}>{person}</ButtonBox>
+        <ButtonBox userType={userType} onClick={changeType}>
+          {person}
+        </ButtonBox>
       </SearchField>
-      {console.log('Current person state:', person)}
+      {/* !Debugging */}
+      {/* {console.log('Current person state:', person)} */}
       {person === '個人' ? personRenderContent() : groupRenderContent()}
     </Mainpage>
   );
