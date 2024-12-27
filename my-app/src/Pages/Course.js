@@ -82,8 +82,8 @@ const FlexCard = styled.div`
     margin-top: 5rem;
     display: flex;
     justify-content: center;
-    color: teal;
-    border: 2px solid teal;
+    color: pink;
+    border: 2px solid pink;
     padding: 5rem;
     border-radius: 1rem;
   }

@@ -30,7 +30,7 @@ const CourseCardContainer = styled.div`
     top: 214px;
     display: flex;
     align-items: center;
-    background-color: teal;
+    background-color: pink;
     width: 100%;
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;

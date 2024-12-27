@@ -36,12 +36,12 @@ const Container = styled.main`
       text-align: center;
       border-spacing: 0;
       margin: 20px 0;
-      border: teal solid 2px;
+      border: pink solid 2px;
       border-radius: 14px;
       tbody,
       thead {
         tr {
-          &.bg-teal-50 {
+          &.bg-pink-50 {
             background-color: #f6f8fa;
           }
           &.bg-white {
@@ -366,7 +366,7 @@ const StudentList = () => {
                 {students.map((student, index) => (
                   <tr
                     key={index}
-                    className={index % 2 === 0 ? 'bg-teal-50' : 'bg-white'}
+                    className={index % 2 === 0 ? 'bg-pink-50' : 'bg-white'}
                   >
                     <td className="px-4 py-2 border-b">
                       {student.id} {student.name}
@@ -422,7 +422,7 @@ const StudentList = () => {
                 {groupList.map((group, index) => (
                   <tr
                     key={index}
-                    className={index % 2 === 0 ? 'bg-teal-50' : 'bg-white'}
+                    className={index % 2 === 0 ? 'bg-pink-50' : 'bg-white'}
                   >
                     <td>{group}</td>
                     <td>

@@ -56,7 +56,7 @@ const Navbar = styled.nav`
     flex-direction: column;
     list-style: none;
     border-radius: 50px;
-    background: teal;
+    background: pink;
     a {
       padding: 0.5rem;
       padding-bottom: 0.7rem;
@@ -88,7 +88,7 @@ const Navbar = styled.nav`
 
       &.active_text {
         &:hover {
-          background-color: #333;
+          background-color: #a4118d;
           align-items: center;
           justify-content: space-evenly;
           flex-direction: column;
@@ -109,7 +109,7 @@ const Navbar = styled.nav`
             content: '登出';
           }
           &.nox:hover {
-            background-color: teal;
+            background-color: pink;
             border-radius: 0 0 50px 50px;
             /* content: '設定'; */
           }
@@ -180,7 +180,7 @@ const Nav = () => {
             <a className="first-icon">
               <img
                 width="45px"
-                src="/images/icons/first-logo.png"
+                src="/images/icons/second-logo.png"
                 alt="profile"
               />
             </a>

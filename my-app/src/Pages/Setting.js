@@ -20,11 +20,11 @@ const Container = styled.main`
     a {
       font-size: 1.25rem;
       text-decoration: none;
-      color: #f76b15;
+      color: #9b15f7;
     }
     p.title {
       font-size: 1.25rem;
-      color: #f76b15;
+      color: #9b15f7;
       margin-bottom: 1rem;
     }
   }

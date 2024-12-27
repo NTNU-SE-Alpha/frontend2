@@ -19,7 +19,7 @@ const SoftwareContainer = styled.main`
     flex-direction: column;
     /* justify-content: center; */
     align-items: center;
-    border: dashed 2px teal;
+    border: dashed 2px pink;
     margin: 30px 0;
     border-radius: 30px;
 
@@ -78,7 +78,7 @@ const SoftwareContainer = styled.main`
           gap: 0.5rem;
         }
         button.pen {
-          color: teal;
+          color: pink;
         }
       }
     }

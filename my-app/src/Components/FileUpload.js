@@ -57,13 +57,13 @@ const FileUpload = styled.div`
             padding: 0.5rem 1rem;
             border: none;
             border-radius: 0.375rem;
-            background-color: #bff8fe;
-            color: teal;
+            background-color: #fff3fa;
+            color: pink;
             font-weight: 600;
             cursor: pointer;
 
             &:hover {
-              background-color: teal;
+              background-color: pink;
               color: #fff;
             }
           }

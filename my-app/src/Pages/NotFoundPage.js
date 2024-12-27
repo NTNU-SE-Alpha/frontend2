@@ -2,7 +2,7 @@ import { Link, useRouteError } from 'react-router-dom';
 import styled from 'styled-components';
 
 const ERR = styled.div`
-  color: teal;
+  color: pink;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -26,7 +26,7 @@ const ERR = styled.div`
     display: flex;
     align-items: center;
     padding: 0.5rem 1.5rem;
-    background-color: teal;
+    background-color: pink;
     color: white;
     border-radius: 30px;
     text-decoration: none;

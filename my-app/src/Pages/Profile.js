@@ -68,7 +68,7 @@ const ProfileContainer = styled.main`
     align-items: center;
     padding: 20px;
     margin: 2rem 1rem;
-    background: teal;
+    background: pink;
     border-radius: 30px;
 
     h2 {

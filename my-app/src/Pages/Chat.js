@@ -36,7 +36,7 @@ const ChatContainer = styled.main`
     justify-content: center;
     align-items: center;
     padding: 1.25rem;
-    border: teal solid 2px;
+    border: pink solid 2px;
     margin: 2rem 0;
     border-radius: 30px;
 
@@ -77,7 +77,7 @@ const ChatContainer = styled.main`
       }
     }
     div#Input {
-      background: teal;
+      background: pink;
       width: 100%;
       border-radius: 30px;
       display: flex;

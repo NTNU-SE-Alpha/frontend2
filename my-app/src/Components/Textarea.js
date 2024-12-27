@@ -5,23 +5,23 @@ const Container = styled.input`
   min-height: 80px;
   width: 100%;
   border-radius: 0.375rem; /* 等於 rounded-md */
-  border: 1px solid var(--input, #4db6ac); /* 默認為 teal */
-  background-color: var(--background, #e0f2f1); /* 默認為 teal 淺色 */
+  border: 1px solid var(--input, #4db6ac); /* 默認為 pink */
+  background-color: var(--background, #e0f2f1); /* 默認為 pink 淺色 */
   padding: 0.5rem 0.75rem; /* px-3 py-2 */
   font-size: 1rem; /* text-base */
   outline: none; /* 去掉外部框線 */
-  color: var(--text-color, #004d40); /* 字體默認為深色 teal */
+  color: var(--text-color, #004d40); /* 字體默認為深色 pink */
   transition:
     box-shadow 0.2s,
     border-color 0.2s; /* 提供 focus 效果平滑過渡 */
 
   &::placeholder {
-    color: var(--muted-foreground, #80cbc4); /* 默認為更淺的 teal */
+    color: var(--muted-foreground, #80cbc4); /* 默認為更淺的 pink */
   }
 
   &:focus-visible {
     outline: none;
-    border-color: #26a69a; /* 更亮的 teal */
+    border-color: #26a69a; /* 更亮的 pink */
     box-shadow:
       0 0 0 2px #80cbc4,
       /* 環境光 */ 0 0 0 4px #e0f7fa; /* focus-visible:ring-2 */
